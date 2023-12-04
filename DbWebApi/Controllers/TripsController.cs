@@ -11,15 +11,19 @@ namespace DbWebApi.Controllers
     [ApiController]
     public class TripsController : ControllerBase
     {
-        private readonly ItemsDBContext _dbContext;
+        private readonly ItemsDBContext _dbContext; // обьявление класса контекста
 
+        // Инициализация контекста
         public TripsController(ItemsDBContext dbContext)
         {
             _dbContext = dbContext;
         }
 
 
-        // GET: api/<TripsController>
+        /// <summary>
+        /// Метод возвращающий все записи из БД
+        /// </summary>
+        /// <returns>Все записи из БД в виде List</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Trip>>> GetTrips()
         {
@@ -30,7 +34,11 @@ namespace DbWebApi.Controllers
             return await _dbContext.Trips.ToListAsync();
         }
 
-        // GET api/<TripsController>/5
+        /// <summary>
+        /// Возвращает запись согласно запросу к БД по id записи
+        /// </summary>
+        /// <param name="id">ID Записи в БД</param>
+        /// <returns>Возвращает экзмепляр класса trip</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Trip>> GetTrips(int id)
         {
@@ -48,13 +56,17 @@ namespace DbWebApi.Controllers
             return trip;
         }
 
-        // POST api/<TripsController>
+        /// <summary>
+        /// Метод добавления записи в БД
+        /// </summary>
+        /// <param name="trip">Экземпляр класса trip</param>
+        /// <returns>Возвращает 201 статус код, если вставка в БД удачна</returns>
         [HttpPost]
         public async Task<ActionResult<Trip>> PostPhonebook(Trip trip)
         {
             if (_dbContext.Trips == null)
             {
-                return Problem("Entity set 'PhonebookContext.Phonebooks'  is null.");
+                return Problem("Entity set 'ItemsDBContext.Trips'  is null.");
             }
             _dbContext.Trips.Add(trip);
             await _dbContext.SaveChangesAsync();
@@ -62,9 +74,14 @@ namespace DbWebApi.Controllers
             return CreatedAtAction(nameof(GetTrips), new { id = trip.Id }, trip);
         }
 
-        // PUT api/<TripsController>/5
+        /// <summary>
+        /// Изминение данных в заданой записи в БД по ID записи
+        /// </summary>
+        /// <param name="id">Id записи в БД</param>
+        /// <param name="trip">Измененный экземляр класса trip</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPhonebook(int id, Trip trip)
+        public async Task<IActionResult> PutTrip(int id, Trip trip)
         {
             if (id != trip.Id)
             {
@@ -92,12 +109,35 @@ namespace DbWebApi.Controllers
         }
 
 
-        // DELETE api/<TripsController>/5
+        /// <summary>
+        /// Удаление записи по ID из БД
+        /// </summary>
+        /// <param name="id">Id записи в БД</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteTrip(int id)
         {
+            if (_dbContext.Trips == null)
+            {
+                return NotFound();
+            }
+            var trip = await _dbContext.Trips.FindAsync(id);
+            if (trip == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Trips.Remove(trip);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
         }
 
+        /// <summary>
+        /// Поиск записи в context БД
+        /// </summary>
+        /// <param name="id">Id записи</param>
+        /// <returns>true если запись найдена, false если запись не найдена</returns>
         private bool TripExists(int id)
         {
             return (_dbContext.Trips?.Any(e => e.Id == id)).GetValueOrDefault();

@@ -25,6 +25,7 @@ namespace DbWebApi.Context
             {
                 entity.ToTable("trips");
             });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
