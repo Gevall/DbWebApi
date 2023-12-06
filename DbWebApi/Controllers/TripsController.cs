@@ -31,6 +31,7 @@ namespace DbWebApi.Controllers
             {
                 return NotFound();
             }
+
             return await _dbContext.Trips.ToListAsync();
         }
 
@@ -62,7 +63,7 @@ namespace DbWebApi.Controllers
         /// <param name="trip">Экземпляр класса trip</param>
         /// <returns>Возвращает 201 статус код, если вставка в БД удачна</returns>
         [HttpPost]
-        public async Task<ActionResult<Trip>> PostPhonebook(Trip trip)
+        public async Task<ActionResult<Trip>> PostTrips(Trip trip)
         {
             if (_dbContext.Trips == null)
             {

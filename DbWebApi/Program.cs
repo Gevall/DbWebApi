@@ -1,13 +1,7 @@
 
 using DbWebApi.Context;
-using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
-using System.Data.Common;
-using System.Diagnostics;
-using ConfigurationManager = System.Configuration.ConfigurationManager;
+
 
 namespace DbWebApi
 {
@@ -22,7 +16,8 @@ namespace DbWebApi
             builder.Services.AddAuthorization();
             builder.Services.AddControllers();
             builder.Services.AddDbContext<ItemsDBContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-            //Debug.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection").ToString());
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
