@@ -2,6 +2,9 @@
 using DbWebApi.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using NuGet.Protocol;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,14 +28,22 @@ namespace DbWebApi.Controllers
         /// </summary>
         /// <returns>Все записи из БД в виде List</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Trip>>> GetTrips()
+        public async Task<List<TripsModel>> GetTrips()
         {
-            if (_dbContext.Trips == null)
+            //if (_dbContext.Trips == null)
+            //{
+            //    return NotFound();
+            //}
+            var test = _dbContext.Trips.Select(x => new TripsModel
             {
-                return NotFound();
-            }
-
-            return await _dbContext.Trips.ToListAsync();
+                Manager = x.Manager,
+                Docs = x.Docs,
+                LoadCrm = x.LoadCrm,
+                ReadySort = x.ReadySort,
+                DateTrip = x.DateTrip,
+                Employe = $"{x.Employes.Lastname} {x.Employes.Firstname} {x.Employes.Patronymic}"
+            });
+            return await test.ToListAsync();
         }
 
         /// <summary>
