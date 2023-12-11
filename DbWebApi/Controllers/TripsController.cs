@@ -24,7 +24,7 @@ namespace DbWebApi.Controllers
 
 
         /// <summary>
-        /// Метод возвращающий все записи из БД
+        /// Метод возвращающий все записи из БД 
         /// </summary>
         /// <returns>Все записи из БД в виде List</returns>
         [HttpGet]
@@ -41,7 +41,7 @@ namespace DbWebApi.Controllers
                 LoadCrm = x.LoadCrm,
                 ReadySort = x.ReadySort,
                 DateTrip = x.DateTrip,
-                Employe = $"{x.Employes.Lastname} {x.Employes.Firstname} {x.Employes.Patronymic}"
+                Specialist = $"{x.Employes.Lastname} {x.Employes.Firstname} {x.Employes.Patronymic}"
             });
             return await test.ToListAsync();
         }

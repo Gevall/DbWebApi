@@ -7,6 +7,6 @@
         public string Docs { get; set; } = null!;
         public string ReadySort { get; set; } = null!;
         public DateTime DateTrip { get; set; }
-        public string? Employe { get; set; }
+        public string? Specialist { get; set; }
     }
 }

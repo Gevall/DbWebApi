@@ -18,7 +18,6 @@ namespace DbWebApi.Context
         }
 
         public virtual DbSet<Employe> Employes { get; set; } = null!;
-        public virtual DbSet<Manager> Managers { get; set; } = null!;
         public virtual DbSet<Trip> Trips { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,16 +33,6 @@ namespace DbWebApi.Context
                 entity.Property(e => e.Patronymic).HasColumnName("patronymic");
             });
 
-            modelBuilder.Entity<Manager>(entity =>
-            {
-                entity.ToTable("managers");
-
-                entity.Property(e => e.Firstname).HasColumnName("firstname");
-
-                entity.Property(e => e.Lastname).HasColumnName("lastname");
-
-                entity.Property(e => e.Patronymic).HasColumnName("patronymic");
-            });
 
             modelBuilder.Entity<Trip>(entity =>
             {
